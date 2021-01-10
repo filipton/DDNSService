@@ -57,7 +57,7 @@ namespace DDNSService
                 {
                     string rawurl = req.RawUrl.Remove(0, 1);
 
-                    if ((req.UserHostName == "ddns.filipton.space" && AkaFirewallFilter) || !AkaFirewallFilter)
+                    if ((req.UserHostName == Program.domainName && AkaFirewallFilter) || !AkaFirewallFilter)
                     {
                         if (req.Url.AbsolutePath != "/favicon.ico")
                         {
