@@ -32,6 +32,7 @@ namespace DDNSService
 		public static string Password = "";
 
 		public static string domainName = "";
+		public static string allowedDomain = "";
 
 		public static List<DnsRecord> dnsRecords = new List<DnsRecord>();
 
@@ -80,6 +81,16 @@ namespace DDNSService
 			else
 			{
 				GetAllDomainsFromAccount();
+			}
+
+			if (File.Exists("adomain.txt"))
+			{
+				allowedDomain = File.ReadAllText("adomain.txt");
+			}
+			else
+			{
+				allowedDomain = "SET UP YOUR DOMAIN NAME TO ALLOW TRAFFIC";
+				File.WriteAllText("adomain.txt", allowedDomain);
 			}
 
 			GetAllRecordsFromDomain();

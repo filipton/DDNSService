@@ -57,11 +57,16 @@ namespace DDNSService
                 {
                     string rawurl = req.RawUrl.Remove(0, 1);
 
-                    if ((req.UserHostName == Program.domainName && AkaFirewallFilter) || !AkaFirewallFilter)
+                    if ((req.UserHostName.Contains(Program.allowedDomain) && AkaFirewallFilter) || !AkaFirewallFilter)
                     {
                         if (req.Url.AbsolutePath != "/favicon.ico")
                         {
-                            Console.WriteLine($"Request #: {++requestCount} ({req.Headers.Get("X-Real-IP")})");
+                            foreach(var s in req.Headers)
+							{
+                                Console.WriteLine($"{s}");
+							}
+
+                            Console.WriteLine($"Request #: {++requestCount} ({req.Headers.Get("CF-Connecting-IP")})");
                             Console.WriteLine("/" + rawurl);
                             Console.WriteLine(req.HttpMethod);
                             Console.WriteLine(req.UserAgent);
@@ -109,7 +114,7 @@ namespace DDNSService
                                     case "update":
                                         if (args.Length == 2)
                                         {
-                                            await SendResponse(resp, Program.ChangeIpOfRecord(args[1], req.Headers.Get("X-Real-IP")));
+                                            await SendResponse(resp, Program.ChangeIpOfRecord(args[1], req.Headers.Get("CF-Connecting-IP")));
                                         }
                                         else
                                         {
